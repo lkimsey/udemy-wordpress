@@ -1,0 +1,8 @@
+127.0.0.1:5000
+root wordpress/
+
+fastcgi / /tmp/udemy-wp.sock {
+    ext .php
+    split .php
+    index index.php
+}
