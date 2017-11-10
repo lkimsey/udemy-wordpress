@@ -1,0 +1,5 @@
+# Ignore all files and sub-directories in this directory
+/*
+
+# Include .gitignore (this) file
+!/.gitignore
