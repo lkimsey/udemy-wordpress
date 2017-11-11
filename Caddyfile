@@ -6,3 +6,8 @@ fastcgi / /tmp/udemy-wp.sock {
     split .php
     index index.php
 }
+
+rewrite {
+	if {path} not_match ^\/wp-admin
+	to {path} {path}/ /index.php?{query}
+}
