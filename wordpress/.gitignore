@@ -4,9 +4,14 @@
 # Include .gitignore (this) file
 !/.gitignore
 
-# Include the theme directory used for this project
+# Include wp-content directory, but not it's content
 !/wp-content/
 /wp-content/*
+
+# Include the theme directory used for this project
 !/wp-content/themes/
 /wp-content/themes/*
 !/wp-content/themes/fictional-university-theme/
+
+# Include the must use plugins directory used for this project
+!/wp-content/mu-plugins/
