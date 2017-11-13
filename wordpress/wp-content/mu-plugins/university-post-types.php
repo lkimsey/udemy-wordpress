@@ -14,7 +14,8 @@ function university_post_types() {
       'edit_item' => 'Edit Event',
       'all_items' => 'All Events'
     ),
-    'menu_icon' => 'dashicons-analytics'
+    'menu_icon' => 'dashicons-analytics',
+    'supports' => array('title', 'editor', 'excerpt')
   ));
 }
 
