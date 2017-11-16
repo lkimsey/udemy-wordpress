@@ -22,6 +22,26 @@ function university_features() {
   register_nav_menu('footer_menu_2', 'Footer Menu 2');
 }
 
+function university_adjust_queries($query) {
+  // 1. NOT in admin area
+  // 2. ONLY in `event` archive page
+  // 3. ONLY for main query created by Wordpress (no custom queries)
+  if(!is_admin() && is_post_type_archive('event') && $query->is_main_query()) {
+    $today = date('Ymd');
+
+    $query->set('meta_key', 'event_date');
+    $query->set('orderby', 'meta_value');
+    $query->set('order', 'asc');
+    $query->set('meta_query', array(
+      'key' => 'event_date',
+      'compare' => '>=',
+      'value' => $today,
+      'type' => 'numeric'
+    ));
+  }
+}
+
 
 add_action('wp_enqueue_scripts', 'university_files');
 add_action('after_setup_theme', 'university_features');
+add_action('pre_get_posts', 'university_adjust_queries');
