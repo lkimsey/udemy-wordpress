@@ -39,6 +39,15 @@ function university_adjust_queries($query) {
       'type' => 'numeric'
     ));
   }
+
+  // 1. NOT in admin area
+  // 2. ONLY in `program` archive page
+  // 3. ONLY for main query created by Wordpress (no custom queries)
+  if(!is_admin() && is_post_type_archive('program') && $query->is_main_query()) {
+    $query->set('orderby', 'title');
+    $query->set('order', 'asc');
+    $query->set('posts_per_page', -1);
+  }
 }
 
 
