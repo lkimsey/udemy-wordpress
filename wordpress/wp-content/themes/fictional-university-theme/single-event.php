@@ -3,6 +3,8 @@
 get_header();
 
 while(have_posts()) {
+  $relatedPrograms = get_field('related_programs');
+
   the_post();
   ?>
   <div class="page-banner">
@@ -21,6 +23,16 @@ while(have_posts()) {
     </div>
 
     <div class="generic-content"><?php the_content(); ?></div>
+
+    <?php if($relatedPrograms): ?>
+      <hr class="section-break" />
+      <h2 class="headline headline--medium">Related Programs</h2>
+      <ul class="link-list min-list">
+      <?php foreach($relatedPrograms as $program): ?>
+        <li><a href="<?php echo get_the_permalink($program); ?>"><?php echo get_the_title($program); ?></li>
+      <?php endforeach; ?>
+    <?php endif; ?>
+    </ul>
   </div>
 
   <?php
