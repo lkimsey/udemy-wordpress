@@ -36,6 +36,21 @@ function university_post_types() {
     'menu_icon' => 'dashicons-carrot',
     'supports' => array('title', 'editor')
   ));
+
+  // Professor Post Type
+  register_post_type('professor', array(
+    'public' => true,
+    'has_archive' => false,
+    'labels' => array(
+      'name' => 'Professors',
+      'singular_name' => 'Event',
+      'add_new_item' => 'Add New Professor',
+      'edit_item' => 'Edit Professor',
+      'all_items' => 'All Professors'
+    ),
+    'menu_icon' => 'dashicons-businessman',
+    'supports' => array('title', 'editor')
+  ));
 }
 
 
