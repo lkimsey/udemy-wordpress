@@ -28,7 +28,7 @@ function university_post_types() {
     ),
     'labels' => array(
       'name' => 'Programs',
-      'singular_name' => 'Event',
+      'singular_name' => 'Program',
       'add_new_item' => 'Add New Program',
       'edit_item' => 'Edit Program',
       'all_items' => 'All Programs'
@@ -43,7 +43,7 @@ function university_post_types() {
     'has_archive' => false,
     'labels' => array(
       'name' => 'Professors',
-      'singular_name' => 'Event',
+      'singular_name' => 'Professor',
       'add_new_item' => 'Add New Professor',
       'edit_item' => 'Edit Professor',
       'all_items' => 'All Professors'
