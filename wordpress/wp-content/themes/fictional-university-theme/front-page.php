@@ -60,7 +60,6 @@ get_header();
             ?>
             <a href="<?php the_permalink(); ?>" class="nu gray">Read more</a>
             </p>
-            </p>
           </div>
         </div>
         <?php
