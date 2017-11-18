@@ -1,5 +1,11 @@
 <?php
 
+$IMAGE_SIZES = array(
+  'professorLandscape' => array('w' => 400, 'h' => 260),
+  'professorPotrait' => array('w' => 480, 'h' => 640),
+  'pageBanner' => array('w' => 1500, 'h' => 350)
+);
+
 function university_files() {
   wp_enqueue_script(
     /* script nickname      */ 'main-university-js',
@@ -15,12 +21,14 @@ function university_files() {
 }
 
 function university_features() {
+  global $IMAGE_SIZES;
+
   add_theme_support('title-tag');
   add_theme_support('post-thumbnails');
 
-  add_image_size('professorLandscape', 400, 260, true);
-  add_image_size('professorPotrait', 480, 640, true);
-  add_image_size('pageBanner', 1500, 350, true);
+  foreach($IMAGE_SIZES as $key => $size) {
+    add_image_size($key, $size['w'], $size['h'], true);
+  }
 
   register_nav_menu('header_menu', 'Header Menu');
   register_nav_menu('footer_menu_1', 'Footer Menu 1');
@@ -55,7 +63,21 @@ function university_adjust_queries($query) {
   }
 }
 
+function university_remove_default_image_sizes($sizes) {
+  return array_filter(
+    $sizes,
+    function($sizeKey) {
+      global $IMAGE_SIZES;
+
+      return in_array($sizeKey, array_keys($IMAGE_SIZES));
+    },
+    ARRAY_FILTER_USE_KEY
+  );
+}
+
 
 add_action('wp_enqueue_scripts', 'university_files');
 add_action('after_setup_theme', 'university_features');
 add_action('pre_get_posts', 'university_adjust_queries');
+
+add_filter('intermediate_image_sizes_advanced', 'university_remove_default_image_sizes');
