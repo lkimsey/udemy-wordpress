@@ -49,7 +49,7 @@ function university_post_types() {
       'all_items' => 'All Professors'
     ),
     'menu_icon' => 'dashicons-businessman',
-    'supports' => array('title', 'editor')
+    'supports' => array('title', 'editor', 'thumbnail')
   ));
 }
 

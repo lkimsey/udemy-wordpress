@@ -16,6 +16,7 @@ function university_files() {
 
 function university_features() {
   add_theme_support('title-tag');
+  add_theme_support('post-thumbnails');
 
   register_nav_menu('header_menu', 'Header Menu');
   register_nav_menu('footer_menu_1', 'Footer Menu 1');
