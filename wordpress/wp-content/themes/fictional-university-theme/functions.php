@@ -20,6 +20,7 @@ function university_features() {
 
   add_image_size('professorLandscape', 400, 260, true);
   add_image_size('professorPotrait', 480, 640, true);
+  add_image_size('pageBanner', 1500, 350, true);
 
   register_nav_menu('header_menu', 'Header Menu');
   register_nav_menu('footer_menu_1', 'Footer Menu 1');
