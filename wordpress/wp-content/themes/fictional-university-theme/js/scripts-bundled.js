@@ -10563,8 +10563,11 @@ var Search = function () {
     this.$openButton = (0, _jquery2.default)('.js-search-trigger');
     this.$closeButton = (0, _jquery2.default)('.search-overlay__close');
     this.$searchOverlay = (0, _jquery2.default)('.search-overlay');
+    this.$searchField = (0, _jquery2.default)('#searchTerm');
 
     this.isOverlayOpen = false;
+
+    this.typingTimer = null;
 
     this.events();
   }
@@ -10579,10 +10582,21 @@ var Search = function () {
       this.$closeButton.on('click', this.closeOverlay.bind(this));
 
       (0, _jquery2.default)(document).on('keydown', this.keyPressDispatcher.bind(this));
+
+      this.$searchField.on('keydown', this.typingLogic.bind(this));
     }
 
     // 3. Methods (functions, actions...)
 
+  }, {
+    key: 'typingLogic',
+    value: function typingLogic() {
+      clearTimeout(this.typingTimer);
+
+      this.typingTimer = setTimeout(function () {
+        return console.log('THIS IS A TIME OUT TEST');
+      }, 2000);
+    }
   }, {
     key: 'keyPressDispatcher',
     value: function keyPressDispatcher(e) {
