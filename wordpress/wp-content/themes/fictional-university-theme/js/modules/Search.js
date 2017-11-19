@@ -55,7 +55,7 @@ class Search {
   }
 
   keyPressDispatcher(e) {
-    if(83 === e.keyCode && !this.isOverlayOpen) {
+    if(83 === e.keyCode && !this.isOverlayOpen && !$('input, textarea, select').is(':focus')) {
       this.openOverlay()
     }
     else if(27 === e.keyCode && this.isOverlayOpen) {
