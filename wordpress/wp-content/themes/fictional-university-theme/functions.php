@@ -94,6 +94,13 @@ function university_adjust_queries($query) {
     $query->set('order', 'asc');
     $query->set('posts_per_page', -1);
   }
+
+  // 1. NOT in admin area
+  // 2. ONLY in `campus` archive page
+  // 3. ONLY for main query created by Wordpress (no custom queries)
+  if(!is_admin() && is_post_type_archive('campus') && $query->is_main_query()) {
+    $query->set('posts_per_page', -1);
+  }
 }
 
 function university_remove_default_image_sizes($sizes) {
