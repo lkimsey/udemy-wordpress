@@ -10564,8 +10564,10 @@ var Search = function () {
     this.$closeButton = (0, _jquery2.default)('.search-overlay__close');
     this.$searchOverlay = (0, _jquery2.default)('.search-overlay');
     this.$searchField = (0, _jquery2.default)('#searchTerm');
+    this.$results = (0, _jquery2.default)('.search-overlay__results');
 
     this.isOverlayOpen = false;
+    this.isSpinnerVisible = false;
 
     this.typingTimer = null;
 
@@ -10583,7 +10585,7 @@ var Search = function () {
 
       (0, _jquery2.default)(document).on('keydown', this.keyPressDispatcher.bind(this));
 
-      this.$searchField.on('keydown', this.typingLogic.bind(this));
+      this.$searchField.on('input', this.typingLogic.bind(this));
     }
 
     // 3. Methods (functions, actions...)
@@ -10593,9 +10595,28 @@ var Search = function () {
     value: function typingLogic() {
       clearTimeout(this.typingTimer);
 
-      this.typingTimer = setTimeout(function () {
-        return console.log('THIS IS A TIME OUT TEST');
-      }, 2000);
+      if (1 > this.$searchField.val().length) {
+        this.$results.html('');
+
+        this.isSpinnerVisible = false;
+
+        return;
+      }
+
+      if (!this.isSpinnerVisible) {
+        this.$results.html('<div class="spinner-loader"></div>');
+
+        this.isSpinnerVisible = true;
+      }
+
+      this.typingTimer = setTimeout(this.getResults.bind(this), 2000);
+    }
+  }, {
+    key: 'getResults',
+    value: function getResults() {
+      this.$results.html('results goes here');
+
+      this.isSpinnerVisible = false;
     }
   }, {
     key: 'keyPressDispatcher',

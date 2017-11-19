@@ -7,8 +7,10 @@ class Search {
     this.$closeButton = $('.search-overlay__close')
     this.$searchOverlay = $('.search-overlay')
     this.$searchField = $('#searchTerm')
+    this.$results = $('.search-overlay__results')
 
     this.isOverlayOpen = false
+    this.isSpinnerVisible = false
 
     this.typingTimer = null
 
@@ -22,14 +24,34 @@ class Search {
 
     $(document).on('keydown', this.keyPressDispatcher.bind(this))
 
-    this.$searchField.on('keydown', this.typingLogic.bind(this))
+    this.$searchField.on('input', this.typingLogic.bind(this))
   }
 
   // 3. Methods (functions, actions...)
   typingLogic() {
     clearTimeout(this.typingTimer)
 
-    this.typingTimer = setTimeout(() => console.log('THIS IS A TIME OUT TEST'), 2000)
+    if(1 > this.$searchField.val().length) {
+      this.$results.html('')
+
+      this.isSpinnerVisible = false
+
+      return
+    }
+
+    if(!this.isSpinnerVisible) {
+      this.$results.html('<div class="spinner-loader"></div>')
+
+      this.isSpinnerVisible = true
+    }
+
+    this.typingTimer = setTimeout(this.getResults.bind(this), 2000)
+  }
+
+  getResults() {
+    this.$results.html('results goes here')
+
+    this.isSpinnerVisible = false
   }
 
   keyPressDispatcher(e) {
