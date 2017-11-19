@@ -10583,11 +10583,15 @@ var Search = function () {
     key: 'openOverlay',
     value: function openOverlay() {
       this.$searchOverlay.addClass('search-overlay--active');
+
+      (0, _jquery2.default)('body').addClass('body-no-scroll');
     }
   }, {
     key: 'closeOverlay',
     value: function closeOverlay() {
       this.$searchOverlay.removeClass('search-overlay--active');
+
+      (0, _jquery2.default)('body').removeClass('body-no-scroll');
     }
   }]);
 
