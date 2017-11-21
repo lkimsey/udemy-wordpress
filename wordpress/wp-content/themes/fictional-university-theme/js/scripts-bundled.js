@@ -10609,14 +10609,22 @@ var Search = function () {
         this.isSpinnerVisible = true;
       }
 
-      this.typingTimer = setTimeout(this.getResults.bind(this), 2000);
+      this.typingTimer = setTimeout(this.getResults.bind(this), 500);
     }
   }, {
     key: 'getResults',
     value: function getResults() {
-      this.$results.html('results goes here');
+      var _this = this;
 
-      this.isSpinnerVisible = false;
+      _jquery2.default.getJSON(UNIVERSITY_DATA.rootUrl + '/wp-json/wp/v2/posts/?search=' + this.$searchField.val(), function (posts) {
+        var generalList = 0 === posts.length ? '<p>No general information matching that search</p>' : '\n          <ul class="link-list min-list">\n            ' + posts.map(function (item) {
+          return '<li><a href="' + item.link + '">' + item.title.rendered + '</a></li>';
+        }).join('') + '\n          </ul>\n        ';
+
+        _this.$results.html('\n      <h2 class="search-overlay__section-title">General Information</h2>\n      ' + generalList + '\n      ');
+
+        _this.isSpinnerVisible = false;
+      });
     }
   }, {
     key: 'keyPressDispatcher',

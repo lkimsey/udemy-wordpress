@@ -45,13 +45,25 @@ class Search {
       this.isSpinnerVisible = true
     }
 
-    this.typingTimer = setTimeout(this.getResults.bind(this), 2000)
+    this.typingTimer = setTimeout(this.getResults.bind(this), 500)
   }
 
   getResults() {
-    this.$results.html('results goes here')
+    $.getJSON(`${UNIVERSITY_DATA.rootUrl}/wp-json/wp/v2/posts/?search=${this.$searchField.val()}`, posts => {
+      const
+        generalList = 0 === posts.length ? '<p>No general information matching that search</p>' : `
+          <ul class="link-list min-list">
+            ${posts.map(item => `<li><a href="${item.link}">${item.title.rendered}</a></li>`).join('')}
+          </ul>
+        `
 
-    this.isSpinnerVisible = false
+      this.$results.html(`
+      <h2 class="search-overlay__section-title">General Information</h2>
+      ${generalList}
+      `)
+
+      this.isSpinnerVisible = false
+    })
   }
 
   keyPressDispatcher(e) {
