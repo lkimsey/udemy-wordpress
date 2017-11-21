@@ -81,8 +81,12 @@ class Search {
   openOverlay() {
     this.$searchOverlay.addClass('search-overlay--active')
 
+    this.$searchField.val('')
     $('body').addClass('body-no-scroll')
     this.isOverlayOpen = true
+
+    // Wait until overlay animation is complete (~300ms), and focus on the input
+    setTimeout(() => this.$searchField.focus(), 301)
   }
 
   closeOverlay() {

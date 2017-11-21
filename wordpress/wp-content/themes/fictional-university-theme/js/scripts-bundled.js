@@ -10641,10 +10641,18 @@ var Search = function () {
   }, {
     key: 'openOverlay',
     value: function openOverlay() {
+      var _this2 = this;
+
       this.$searchOverlay.addClass('search-overlay--active');
 
+      this.$searchField.val('');
       (0, _jquery2.default)('body').addClass('body-no-scroll');
       this.isOverlayOpen = true;
+
+      // Wait until overlay animation is complete (~300ms), and focus on the input
+      setTimeout(function () {
+        return _this2.$searchField.focus();
+      }, 301);
     }
   }, {
     key: 'closeOverlay',
