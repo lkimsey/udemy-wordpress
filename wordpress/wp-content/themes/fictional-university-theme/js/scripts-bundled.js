@@ -10560,6 +10560,9 @@ var Search = function () {
   function Search() {
     _classCallCheck(this, Search);
 
+    // NOTE: add static HTML to DOM before initializing jQuery objects for them
+    this.addSeatchHTML();
+
     this.$openButton = (0, _jquery2.default)('.js-search-trigger');
     this.$closeButton = (0, _jquery2.default)('.search-overlay__close');
     this.$searchOverlay = (0, _jquery2.default)('.search-overlay');
@@ -10650,6 +10653,11 @@ var Search = function () {
 
       (0, _jquery2.default)('body').removeClass('body-no-scroll');
       this.isOverlayOpen = false;
+    }
+  }, {
+    key: 'addSeatchHTML',
+    value: function addSeatchHTML() {
+      (0, _jquery2.default)('body').append('\n      <div class="search-overlay">\n        <div class="search-overlay__top">\n          <div class="container">\n            <i class="fa fa-search search-overlay__icon" aria-hidden="true"></i>\n            <input type="text" class="search-term" placeholder="What are you looking for?" id="searchTerm" />\n            <i class="fa fa-window-close search-overlay__close" aria-hidden="true"></i>\n          </div>\n        </div>\n\n        <div class="container">\n          <div class="search-overlay__results">\n          </div>\n        </div>\n      </div>\n    ');
     }
   }]);
 
