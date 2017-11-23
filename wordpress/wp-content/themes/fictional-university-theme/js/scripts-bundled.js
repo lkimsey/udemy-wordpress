@@ -10545,6 +10545,8 @@ Object.defineProperty(exports, "__esModule", {
   value: true
 });
 
+var _slicedToArray = function () { function sliceIterator(arr, i) { var _arr = []; var _n = true; var _d = false; var _e = undefined; try { for (var _i = arr[Symbol.iterator](), _s; !(_n = (_s = _i.next()).done); _n = true) { _arr.push(_s.value); if (i && _arr.length === i) break; } } catch (err) { _d = true; _e = err; } finally { try { if (!_n && _i["return"]) _i["return"](); } finally { if (_d) throw _e; } } return _arr; } return function (arr, i) { if (Array.isArray(arr)) { return arr; } else if (Symbol.iterator in Object(arr)) { return sliceIterator(arr, i); } else { throw new TypeError("Invalid attempt to destructure non-iterable instance"); } }; }();
+
 var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
 
 var _jquery = __webpack_require__(0);
@@ -10619,12 +10621,19 @@ var Search = function () {
     value: function getResults() {
       var _this = this;
 
-      _jquery2.default.getJSON(UNIVERSITY_DATA.rootUrl + '/wp-json/wp/v2/posts/?search=' + this.$searchField.val(), function (posts) {
-        var generalList = 0 === posts.length ? '<p>No general information matching that search</p>' : '\n          <ul class="link-list min-list">\n            ' + posts.map(function (item) {
-          return '<li><a href="' + item.link + '">' + item.title.rendered + '</a></li>';
-        }).join('') + '\n          </ul>\n        ';
+      _jquery2.default.when(_jquery2.default.getJSON(UNIVERSITY_DATA.rootUrl + '/wp-json/wp/v2/posts/?search=' + this.$searchField.val()), _jquery2.default.getJSON(UNIVERSITY_DATA.rootUrl + '/wp-json/wp/v2/pages/?search=' + this.$searchField.val())).then(function (_ref, _ref2) {
+        var _ref4 = _slicedToArray(_ref, 1),
+            posts = _ref4[0];
 
-        _this.$results.html('\n      <h2 class="search-overlay__section-title">General Information</h2>\n      ' + generalList + '\n      ');
+        var _ref3 = _slicedToArray(_ref2, 1),
+            pages = _ref3[0];
+
+        var combinedResults = posts.concat(pages),
+            generalList = 0 === combinedResults.length ? '<p>No general information matching that search</p>' : '\n            <ul class="link-list min-list">\n              ' + combinedResults.map(function (item) {
+          return '<li><a href="' + item.link + '">' + item.title.rendered + '</a></li>';
+        }).join('') + '\n            </ul>\n          ';
+
+        _this.$results.html('\n        <h2 class="search-overlay__section-title">General Information</h2>\n        ' + generalList + '\n        ');
 
         _this.isSpinnerVisible = false;
       });

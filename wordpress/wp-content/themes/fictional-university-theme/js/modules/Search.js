@@ -52,21 +52,28 @@ class Search {
   }
 
   getResults() {
-    $.getJSON(`${UNIVERSITY_DATA.rootUrl}/wp-json/wp/v2/posts/?search=${this.$searchField.val()}`, posts => {
-      const
-        generalList = 0 === posts.length ? '<p>No general information matching that search</p>' : `
-          <ul class="link-list min-list">
-            ${posts.map(item => `<li><a href="${item.link}">${item.title.rendered}</a></li>`).join('')}
-          </ul>
-        `
+    $
+      .when(
+        $.getJSON(`${UNIVERSITY_DATA.rootUrl}/wp-json/wp/v2/posts/?search=${this.$searchField.val()}`),
+        $.getJSON(`${UNIVERSITY_DATA.rootUrl}/wp-json/wp/v2/pages/?search=${this.$searchField.val()}`)
+      )
+      .then(([posts], [pages]) => {
+        const
+          combinedResults = posts.concat(pages),
 
-      this.$results.html(`
-      <h2 class="search-overlay__section-title">General Information</h2>
-      ${generalList}
-      `)
+          generalList = 0 === combinedResults.length ? '<p>No general information matching that search</p>' : `
+            <ul class="link-list min-list">
+              ${combinedResults.map(item => `<li><a href="${item.link}">${item.title.rendered}</a></li>`).join('')}
+            </ul>
+          `
 
-      this.isSpinnerVisible = false
-    })
+        this.$results.html(`
+        <h2 class="search-overlay__section-title">General Information</h2>
+        ${generalList}
+        `)
+
+        this.isSpinnerVisible = false
+      })
   }
 
   keyPressDispatcher(e) {
