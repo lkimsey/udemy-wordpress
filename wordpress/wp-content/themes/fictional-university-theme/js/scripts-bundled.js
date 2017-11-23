@@ -10621,7 +10621,9 @@ var Search = function () {
     value: function getResults() {
       var _this = this;
 
-      _jquery2.default.when(_jquery2.default.getJSON(UNIVERSITY_DATA.rootUrl + '/wp-json/wp/v2/posts/?search=' + this.$searchField.val()), _jquery2.default.getJSON(UNIVERSITY_DATA.rootUrl + '/wp-json/wp/v2/pages/?search=' + this.$searchField.val())).then(function (_ref, _ref2) {
+      _jquery2.default.when(_jquery2.default.getJSON(UNIVERSITY_DATA.rootUrl + '/wp-json/wp/v2/posts/?search=' + this.$searchField.val()), _jquery2.default.getJSON(UNIVERSITY_DATA.rootUrl + '/wp-json/wp/v2/pages/?search=' + this.$searchField.val())).then(
+      // Success
+      function (_ref, _ref2) {
         var _ref4 = _slicedToArray(_ref, 1),
             posts = _ref4[0];
 
@@ -10629,13 +10631,18 @@ var Search = function () {
             pages = _ref3[0];
 
         var combinedResults = posts.concat(pages),
-            generalList = 0 === combinedResults.length ? '<p>No general information matching that search</p>' : '\n            <ul class="link-list min-list">\n              ' + combinedResults.map(function (item) {
+            generalList = 0 === combinedResults.length ? '<p>No general information matching that search</p>' : '\n              <ul class="link-list min-list">\n                ' + combinedResults.map(function (item) {
           return '<li><a href="' + item.link + '">' + item.title.rendered + '</a></li>';
-        }).join('') + '\n            </ul>\n          ';
+        }).join('') + '\n              </ul>\n            ';
 
-        _this.$results.html('\n        <h2 class="search-overlay__section-title">General Information</h2>\n        ' + generalList + '\n        ');
+        _this.$results.html('\n          <h2 class="search-overlay__section-title">General Information</h2>\n          ' + generalList + '\n          ');
 
         _this.isSpinnerVisible = false;
+      },
+
+      // Failure
+      function () {
+        _this.$results.html('<p>Unexpected error, please try again</p>');
       });
     }
   }, {

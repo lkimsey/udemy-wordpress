@@ -57,23 +57,31 @@ class Search {
         $.getJSON(`${UNIVERSITY_DATA.rootUrl}/wp-json/wp/v2/posts/?search=${this.$searchField.val()}`),
         $.getJSON(`${UNIVERSITY_DATA.rootUrl}/wp-json/wp/v2/pages/?search=${this.$searchField.val()}`)
       )
-      .then(([posts], [pages]) => {
-        const
-          combinedResults = posts.concat(pages),
+      .then(
+        // Success
+        ([posts], [pages]) => {
+          const
+            combinedResults = posts.concat(pages),
 
-          generalList = 0 === combinedResults.length ? '<p>No general information matching that search</p>' : `
-            <ul class="link-list min-list">
-              ${combinedResults.map(item => `<li><a href="${item.link}">${item.title.rendered}</a></li>`).join('')}
-            </ul>
-          `
+            generalList = 0 === combinedResults.length ? '<p>No general information matching that search</p>' : `
+              <ul class="link-list min-list">
+                ${combinedResults.map(item => `<li><a href="${item.link}">${item.title.rendered}</a></li>`).join('')}
+              </ul>
+            `
 
-        this.$results.html(`
-        <h2 class="search-overlay__section-title">General Information</h2>
-        ${generalList}
-        `)
+          this.$results.html(`
+          <h2 class="search-overlay__section-title">General Information</h2>
+          ${generalList}
+          `)
 
-        this.isSpinnerVisible = false
-      })
+          this.isSpinnerVisible = false
+        },
+
+        // Failure
+        () => {
+          this.$results.html('<p>Unexpected error, please try again</p>')
+        }
+      )
   }
 
   keyPressDispatcher(e) {
