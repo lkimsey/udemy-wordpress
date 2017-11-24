@@ -52,26 +52,80 @@ class Search {
   }
 
   getResults() {
-    $
-      .when(
-        $.getJSON(`${UNIVERSITY_DATA.rootUrl}/wp-json/wp/v2/posts/?search=${this.$searchField.val()}`),
-        $.getJSON(`${UNIVERSITY_DATA.rootUrl}/wp-json/wp/v2/pages/?search=${this.$searchField.val()}`)
-      )
+    $.getJSON(`${UNIVERSITY_DATA.rootUrl}/wp-json/university/v1/search/?term=${this.$searchField.val()}`)
       .then(
         // Success
-        ([posts], [pages]) => {
+        results => {
           const
-            combinedResults = posts.concat(pages),
-
-            generalList = 0 === combinedResults.length ? '<p>No general information matching that search</p>' : `
+            generalList = 0 === results.generalInfo.length ? '<p>No general information match that search.</p>' : `
               <ul class="link-list min-list">
-                ${combinedResults.map(item => `<li><a href="${item.link}">${item.title.rendered}</a>${ 'post' === item.type ? ` by ${item.authorName}` : '' }</li>`).join('')}
+                ${results.generalInfo.map(item => `<li><a href="${item.permalink}">${item.title}</a>${ 'post' === item.postType ? ` by ${item.authorName}` : '' }</li>`).join('')}
               </ul>
-            `
+            `,
+
+            programList = 0 === results.programs.length ? `<p>No programs match that search. <a href="${UNIVERSITY_DATA.rootUrl}/programs">View all programs.</a></p>` : `
+              <ul class="link-list min-list">
+                ${results.programs.map(item => `<li><a href="${item.permalink}">${item.title}</a></li>`).join('')}
+              </ul>
+            `,
+
+            campusList = 0 === results.campuses.length ? `<p>No campuses match that search. <a href="${UNIVERSITY_DATA.rootUrl}/campuses">View all campuses.</a></p></p>` : `
+              <ul class="link-list min-list">
+                ${results.campuses.map(item => `<li><a href="${item.permalink}">${item.title}</a></li>`).join('')}
+              </ul>
+            `,
+
+            professorList = 0 === results.professors.length ? '<p>No professors match that search.' : `
+              <ul class="professor-cards">
+                ${results.professors.map(item => `
+                  <li class="professor-card__list-item">
+                    <a class="professor-card" href="${item.permalink}">
+                      <img class="professor-card__image" src="${item.image}" />
+                      <span class="professor-card__name">${item.title}</span>
+                    </a>
+                  </li>
+                `).join('')}
+              </ul>
+            `,
+
+            eventList = 0 === results.events.length ? `<p>No events match that search. <a href="${UNIVERSITY_DATA.rootUrl}/events">View all events.</a></p></p>` :
+              results.events.map(item => `
+                <div class="event-summary">
+                  <a class="event-summary__date t-center" href="${item.permalink}">
+                    <span class="event-summary__month">${item.month}</span>
+                    <span class="event-summary__day">${item.day}</span>
+                  </a>
+                  <div class="event-summary__content">
+                    <h5 class="event-summary__title headline headline--tiny"><a href="${item.permalink}">${item.title}</a></h5>
+                    <p>
+                    ${item.description}
+                    <a href="${item.permalink}" class="nu gray">Read more</a>
+                    </p>
+                  </div>
+                </div>
+              `).join('')
 
           this.$results.html(`
-          <h2 class="search-overlay__section-title">General Information</h2>
-          ${generalList}
+            <div class="row">
+              <div class="one-third">
+                <h2 class="search-overlay__section-title">General Information</h2>
+                ${generalList}
+              </div>
+              <div class="one-third">
+                <h2 class="search-overlay__section-title">Programs</h2>
+                ${programList}
+
+                <h2 class="search-overlay__section-title">Professors</h2>
+                ${professorList}
+              </div>
+              <div class="one-third">
+                <h2 class="search-overlay__section-title">Campuses</h2>
+                ${campusList}
+
+                <h2 class="search-overlay__section-title">Events</h2>
+                ${eventList}
+              </div>
+            </div>
           `)
 
           this.isSpinnerVisible = false

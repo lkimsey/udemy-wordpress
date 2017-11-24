@@ -10545,8 +10545,6 @@ Object.defineProperty(exports, "__esModule", {
   value: true
 });
 
-var _slicedToArray = function () { function sliceIterator(arr, i) { var _arr = []; var _n = true; var _d = false; var _e = undefined; try { for (var _i = arr[Symbol.iterator](), _s; !(_n = (_s = _i.next()).done); _n = true) { _arr.push(_s.value); if (i && _arr.length === i) break; } } catch (err) { _d = true; _e = err; } finally { try { if (!_n && _i["return"]) _i["return"](); } finally { if (_d) throw _e; } } return _arr; } return function (arr, i) { if (Array.isArray(arr)) { return arr; } else if (Symbol.iterator in Object(arr)) { return sliceIterator(arr, i); } else { throw new TypeError("Invalid attempt to destructure non-iterable instance"); } }; }();
-
 var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
 
 var _jquery = __webpack_require__(0);
@@ -10621,21 +10619,26 @@ var Search = function () {
     value: function getResults() {
       var _this = this;
 
-      _jquery2.default.when(_jquery2.default.getJSON(UNIVERSITY_DATA.rootUrl + '/wp-json/wp/v2/posts/?search=' + this.$searchField.val()), _jquery2.default.getJSON(UNIVERSITY_DATA.rootUrl + '/wp-json/wp/v2/pages/?search=' + this.$searchField.val())).then(
+      _jquery2.default.getJSON(UNIVERSITY_DATA.rootUrl + '/wp-json/university/v1/search/?term=' + this.$searchField.val()).then(
       // Success
-      function (_ref, _ref2) {
-        var _ref4 = _slicedToArray(_ref, 1),
-            posts = _ref4[0];
+      function (results) {
+        var generalList = 0 === results.generalInfo.length ? '<p>No general information match that search.</p>' : '\n              <ul class="link-list min-list">\n                ' + results.generalInfo.map(function (item) {
+          return '<li><a href="' + item.permalink + '">' + item.title + '</a>' + ('post' === item.postType ? ' by ' + item.authorName : '') + '</li>';
+        }).join('') + '\n              </ul>\n            ',
+            programList = 0 === results.programs.length ? '<p>No programs match that search. <a href="' + UNIVERSITY_DATA.rootUrl + '/programs">View all programs.</a></p>' : '\n              <ul class="link-list min-list">\n                ' + results.programs.map(function (item) {
+          return '<li><a href="' + item.permalink + '">' + item.title + '</a></li>';
+        }).join('') + '\n              </ul>\n            ',
+            campusList = 0 === results.campuses.length ? '<p>No campuses match that search. <a href="' + UNIVERSITY_DATA.rootUrl + '/campuses">View all campuses.</a></p></p>' : '\n              <ul class="link-list min-list">\n                ' + results.campuses.map(function (item) {
+          return '<li><a href="' + item.permalink + '">' + item.title + '</a></li>';
+        }).join('') + '\n              </ul>\n            ',
+            professorList = 0 === results.professors.length ? '<p>No professors match that search.' : '\n              <ul class="professor-cards">\n                ' + results.professors.map(function (item) {
+          return '\n                  <li class="professor-card__list-item">\n                    <a class="professor-card" href="' + item.permalink + '">\n                      <img class="professor-card__image" src="' + item.image + '" />\n                      <span class="professor-card__name">' + item.title + '</span>\n                    </a>\n                  </li>\n                ';
+        }).join('') + '\n              </ul>\n            ',
+            eventList = 0 === results.events.length ? '<p>No events match that search. <a href="' + UNIVERSITY_DATA.rootUrl + '/events">View all events.</a></p></p>' : results.events.map(function (item) {
+          return '\n                <div class="event-summary">\n                  <a class="event-summary__date t-center" href="' + item.permalink + '">\n                    <span class="event-summary__month">' + item.month + '</span>\n                    <span class="event-summary__day">' + item.day + '</span>\n                  </a>\n                  <div class="event-summary__content">\n                    <h5 class="event-summary__title headline headline--tiny"><a href="' + item.permalink + '">' + item.title + '</a></h5>\n                    <p>\n                    ' + item.description + '\n                    <a href="' + item.permalink + '" class="nu gray">Read more</a>\n                    </p>\n                  </div>\n                </div>\n              ';
+        }).join('');
 
-        var _ref3 = _slicedToArray(_ref2, 1),
-            pages = _ref3[0];
-
-        var combinedResults = posts.concat(pages),
-            generalList = 0 === combinedResults.length ? '<p>No general information matching that search</p>' : '\n              <ul class="link-list min-list">\n                ' + combinedResults.map(function (item) {
-          return '<li><a href="' + item.link + '">' + item.title.rendered + '</a>' + ('post' === item.type ? ' by ' + item.authorName : '') + '</li>';
-        }).join('') + '\n              </ul>\n            ';
-
-        _this.$results.html('\n          <h2 class="search-overlay__section-title">General Information</h2>\n          ' + generalList + '\n          ');
+        _this.$results.html('\n            <div class="row">\n              <div class="one-third">\n                <h2 class="search-overlay__section-title">General Information</h2>\n                ' + generalList + '\n              </div>\n              <div class="one-third">\n                <h2 class="search-overlay__section-title">Programs</h2>\n                ' + programList + '\n\n                <h2 class="search-overlay__section-title">Professors</h2>\n                ' + professorList + '\n              </div>\n              <div class="one-third">\n                <h2 class="search-overlay__section-title">Campuses</h2>\n                ' + campusList + '\n\n                <h2 class="search-overlay__section-title">Events</h2>\n                ' + eventList + '\n              </div>\n            </div>\n          ');
 
         _this.isSpinnerVisible = false;
       },

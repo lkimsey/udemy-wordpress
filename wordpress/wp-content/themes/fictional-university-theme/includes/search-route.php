@@ -30,10 +30,15 @@ function universitySearchResults($data) {
     );
 
     if('post' == get_post_type() || 'page' == get_post_type()) {
+      $record['postType'] = get_post_type();
+      $record['authorName'] = get_the_author();
+
       array_push($results['generalInfo'], $record);
     }
 
     if('professor' == get_post_type()) {
+      $record['image'] = get_the_post_thumbnail_url(0, 'professorLandscape');
+
       array_push($results['professors'], $record);
     }
 
@@ -46,6 +51,17 @@ function universitySearchResults($data) {
     }
 
     if('event' == get_post_type()) {
+      $eventDate = new DateTime(get_field('event_date'));
+      $record['month'] = $eventDate->format('M');
+      $record['day'] = $eventDate->format('d');
+
+      if(has_excerpt()) {
+        $record['description'] = get_the_excerpt();
+      }
+      else {
+        $record['description'] = wp_trim_words(get_the_content(), 18);
+      }
+
       array_push($results['events'], $record);
     }
   }
