@@ -65,7 +65,7 @@ class Search {
 
             generalList = 0 === combinedResults.length ? '<p>No general information matching that search</p>' : `
               <ul class="link-list min-list">
-                ${combinedResults.map(item => `<li><a href="${item.link}">${item.title.rendered}</a></li>`).join('')}
+                ${combinedResults.map(item => `<li><a href="${item.link}">${item.title.rendered}</a>${ 'post' === item.type ? ` by ${item.authorName}` : '' }</li>`).join('')}
               </ul>
             `
 

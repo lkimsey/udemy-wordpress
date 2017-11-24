@@ -119,9 +119,17 @@ function university_remove_default_image_sizes($sizes) {
   );
 }
 
+function university_custom_rest() {
+  register_rest_field('post', 'authorName', array(
+    'get_callback' => function() { return get_the_author(); }
+  ));
+}
+
+
 
 add_action('wp_enqueue_scripts', 'university_files');
 add_action('after_setup_theme', 'university_features');
 add_action('pre_get_posts', 'university_adjust_queries');
+add_action('rest_api_init', 'university_custom_rest');
 
 add_filter('intermediate_image_sizes_advanced', 'university_remove_default_image_sizes');

@@ -10632,7 +10632,7 @@ var Search = function () {
 
         var combinedResults = posts.concat(pages),
             generalList = 0 === combinedResults.length ? '<p>No general information matching that search</p>' : '\n              <ul class="link-list min-list">\n                ' + combinedResults.map(function (item) {
-          return '<li><a href="' + item.link + '">' + item.title.rendered + '</a></li>';
+          return '<li><a href="' + item.link + '">' + item.title.rendered + '</a>' + ('post' === item.type ? ' by ' + item.authorName : '') + '</li>';
         }).join('') + '\n              </ul>\n            ';
 
         _this.$results.html('\n          <h2 class="search-overlay__section-title">General Information</h2>\n          ' + generalList + '\n          ');
