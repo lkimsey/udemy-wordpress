@@ -67,6 +67,7 @@ function university_post_types() {
       'all_items' => 'All Professors'
     ),
     'menu_icon' => 'dashicons-businessman',
+    'show_in_rest' => true,
     'supports' => array('title', 'editor', 'thumbnail')
   ));
 }
