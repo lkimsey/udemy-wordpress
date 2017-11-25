@@ -52,7 +52,7 @@ function university_post_types() {
       'all_items' => 'All Programs'
     ),
     'menu_icon' => 'dashicons-carrot',
-    'supports' => array('title', 'editor')
+    'supports' => array('title')
   ));
 
   // Professor Post Type
