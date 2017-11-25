@@ -127,11 +127,34 @@ function university_custom_rest() {
   ));
 }
 
+function redirect_subscribers_to_frontend() {
+  $currentUser = wp_get_current_user();
+
+  // User have one role and it is "Subscriber"
+  if(1 == count($currentUser->roles) && 'subscriber' == $currentUser->roles[0]) {
+    wp_redirect(esc_url(site_url('/')));
+
+    exit;
+  }
+}
+
+function no_subscriber_admin_bar() {
+  $currentUser = wp_get_current_user();
+
+  // User have one role and it is "Subscriber"
+  if(1 == count($currentUser->roles) && 'subscriber' == $currentUser->roles[0]) {
+    show_admin_bar(false);
+  }
+}
 
 
 add_action('wp_enqueue_scripts', 'university_files');
 add_action('after_setup_theme', 'university_features');
 add_action('pre_get_posts', 'university_adjust_queries');
 add_action('rest_api_init', 'university_custom_rest');
+
+// Redirect subscriber accounts out of admin and onto homepage
+add_action('admin_init', 'redirect_subscribers_to_frontend');
+add_action('wp_loaded', 'no_subscriber_admin_bar');
 
 add_filter('intermediate_image_sizes_advanced', 'university_remove_default_image_sizes');
