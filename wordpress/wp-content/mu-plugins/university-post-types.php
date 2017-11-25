@@ -16,7 +16,9 @@ function university_post_types() {
       'all_items' => 'All Events'
     ),
     'menu_icon' => 'dashicons-analytics',
-    'supports' => array('title', 'editor', 'excerpt')
+    'supports' => array('title', 'editor', 'excerpt'),
+    'capability_type' => 'event',
+    'map_meta_cap' => true
   ));
 
   // Campus Post Type
@@ -34,7 +36,9 @@ function university_post_types() {
       'all_items' => 'All Campuses'
     ),
     'menu_icon' => 'dashicons-admin-multisite',
-    'supports' => array('title', 'editor', 'excerpt')
+    'supports' => array('title', 'editor', 'excerpt'),
+    'capability_type' => 'campus',
+    'map_meta_cap' => true
   ));
 
   // Program Post Type
