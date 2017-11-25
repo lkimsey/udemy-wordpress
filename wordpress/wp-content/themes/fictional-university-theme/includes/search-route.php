@@ -46,6 +46,16 @@ function universitySearchResults($data) {
 
     if('program' == get_post_type()) {
       $programIDs[] = get_the_ID();
+      $relatedCampuses = get_field('related_campuses');
+
+      if(!empty($relatedCampuses)) {
+        foreach($relatedCampuses as $campus) {
+          array_push($results['campuses'], array(
+            'title' => get_the_title($campus),
+            'permalink' => get_the_permalink($campus)
+          ));
+        }
+      }
 
       array_push($results['programs'], $record);
     }
@@ -74,7 +84,7 @@ function universitySearchResults($data) {
 
   if(!empty($programIDs)) {
     $programRelationshipQuery = new WP_Query(array(
-      'post_type' => 'professor',
+      'post_type' => array('professor', 'event'),
 
       /**
         * 'meta_query' => array(
@@ -122,12 +132,29 @@ function universitySearchResults($data) {
         array_push($results['professors'], $record);
       }
 
+      if('event' == get_post_type()) {
+        $eventDate = new DateTime(get_field('event_date'));
+        $record['month'] = $eventDate->format('M');
+        $record['day'] = $eventDate->format('d');
+
+        if(has_excerpt()) {
+          $record['description'] = get_the_excerpt();
+        }
+        else {
+          $record['description'] = wp_trim_words(get_the_content(), 18);
+        }
+
+        array_push($results['events'], $record);
+      }
+
       wp_reset_postdata();
     }
   }
 
   // Deduplicate results
   $results['professors'] = array_values(array_unique($results['professors'], SORT_REGULAR));
+  $results['events'] = array_values(array_unique($results['events'], SORT_REGULAR));
+  $results['campuses'] = array_values(array_unique($results['campuses'], SORT_REGULAR));
 
   return $results;
 }
