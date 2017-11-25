@@ -10672,6 +10672,8 @@ var Search = function () {
       setTimeout(function () {
         return _this2.$searchField.focus();
       }, 301);
+
+      return false;
     }
   }, {
     key: 'closeOverlay',

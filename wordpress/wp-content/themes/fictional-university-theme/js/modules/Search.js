@@ -156,6 +156,8 @@ class Search {
 
     // Wait until overlay animation is complete (~300ms), and focus on the input
     setTimeout(() => this.$searchField.focus(), 301)
+
+    return false;
   }
 
   closeOverlay() {
