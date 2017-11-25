@@ -74,6 +74,22 @@ function university_post_types() {
     'show_in_rest' => true,
     'supports' => array('title', 'editor', 'thumbnail')
   ));
+
+  // Note Post Type
+  register_post_type('note', array(
+    'public' => false,
+    'show_ui' => true,  // Show in admin dashboard UI
+    'labels' => array(
+      'name' => 'Notes',
+      'singular_name' => 'Note',
+      'add_new_item' => 'Add New Note',
+      'edit_item' => 'Edit Note',
+      'all_items' => 'All Notes'
+    ),
+    'menu_icon' => 'dashicons-welcome-write-blog',
+    'show_in_rest' => true,
+    'supports' => array('title', 'editor')
+  ));
 }
 
 
