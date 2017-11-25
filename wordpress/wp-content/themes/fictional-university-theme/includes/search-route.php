@@ -39,7 +39,7 @@ function universitySearchResults($data) {
     }
 
     if('professor' == get_post_type()) {
-      $record['image'] = get_the_post_thumbnail_url(0, 'professorLandscape');
+      $record['image'] = esc_url(get_the_post_thumbnail_url(0, 'professorLandscape'));
 
       array_push($results['professors'], $record);
     }
@@ -127,7 +127,7 @@ function universitySearchResults($data) {
       );
 
       if('professor' == get_post_type()) {
-        $record['image'] = get_the_post_thumbnail_url(0, 'professorLandscape');
+        $record['image'] = esc_url(get_the_post_thumbnail_url(0, 'professorLandscape'));
 
         array_push($results['professors'], $record);
       }
