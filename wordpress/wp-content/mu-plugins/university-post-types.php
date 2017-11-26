@@ -92,6 +92,22 @@ function university_post_types() {
     'capability_type' => 'note',
     'map_meta_cap' => true
   ));
+
+  // Like Post Type
+  register_post_type('like', array(
+    'show_in_rest' => false,
+    'public' => false,
+    'show_ui' => true,  // Show in admin dashboard UI
+    'labels' => array(
+      'name' => 'Likes',
+      'singular_name' => 'Like',
+      'add_new_item' => 'Add New Like',
+      'edit_item' => 'Edit Like',
+      'all_items' => 'All Likes'
+    ),
+    'menu_icon' => 'dashicons-heart',
+    'supports' => array('title')
+  ));
 }
 
 
