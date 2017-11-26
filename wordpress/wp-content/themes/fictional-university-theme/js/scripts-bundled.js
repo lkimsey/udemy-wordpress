@@ -10600,7 +10600,11 @@ var MyNotes = function () {
       },
       // failure
       function (e) {
-        console.error(e);
+        if ('NOTE_LIMIT_REACHED' === e.responseText) {
+          (0, _jquery2.default)('.note-limit-message').addClass('active');
+        } else {
+          console.error(e);
+        }
       });
     }
   }, {
@@ -10665,8 +10669,12 @@ var MyNotes = function () {
         }
       }).then(
       // success
-      function () {
+      function (response) {
         $noteItem.slideUp();
+
+        if (5 > response.userNoteCount) {
+          (0, _jquery2.default)('.note-limit-message').removeClass('active');
+        }
       },
       // failure
       function (e) {

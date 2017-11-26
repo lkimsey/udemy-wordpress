@@ -52,7 +52,12 @@ class MyNotes {
       },
       // failure
       e => {
-        console.error(e)
+        if('NOTE_LIMIT_REACHED' === e.responseText) {
+          $('.note-limit-message').addClass('active')
+        }
+        else {
+          console.error(e)
+        }
       }
     )
   }
@@ -138,8 +143,12 @@ class MyNotes {
     })
     .then(
       // success
-      () => {
+      response => {
         $noteItem.slideUp()
+
+        if(5 > response.userNoteCount) {
+          $('.note-limit-message').removeClass('active')
+        }
       },
       // failure
       e => {

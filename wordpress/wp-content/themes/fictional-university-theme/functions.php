@@ -126,6 +126,10 @@ function university_custom_rest() {
   register_rest_field('post', 'authorName', array(
     'get_callback' => function() { return get_the_author(); }
   ));
+
+  register_rest_field('note', 'userNoteCount', array(
+    'get_callback' => function() { return count_user_posts(get_current_user_id(), 'note'); }
+  ));
 }
 
 function redirect_subscribers_to_frontend() {
@@ -161,9 +165,14 @@ function university_login_css() {
   wp_enqueue_style('university_main_styles', get_stylesheet_uri());
 }
 
-function university_post_filter($data) {
+function university_post_filter($data, $post) {
   if('note' == $data['post_type']) {
     // Filtering for user entered "note" post type
+
+    // Only allow maximum of 5 notes per user
+    if(4 < count_user_posts(get_current_user_id(), 'note') && !$post['ID']) {
+      die('NOTE_LIMIT_REACHED');
+    }
 
     // Sanitize title and content
     $data['post_content'] = sanitize_textarea_field($data['post_content']);
@@ -193,7 +202,7 @@ add_filter('login_headerurl', 'university_header_url');
 add_filter('login_headertitle', 'university_header_title');
 
 // Make adjustments to posts being manipulated by the user
-add_filter('wp_insert_post_data', 'university_post_filter');
+add_filter('wp_insert_post_data', 'university_post_filter', 10, 2);
 
 // Disable default image sizes
 add_filter('intermediate_image_sizes_advanced', 'university_remove_default_image_sizes');
