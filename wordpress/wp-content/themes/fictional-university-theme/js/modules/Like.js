@@ -25,9 +25,35 @@ class Like {
   }
 
   createLike() {
+    $.ajax({
+      'url': `${UNIVERSITY_DATA.rootUrl}/wp-json/university/v1/like`,
+      'type': 'POST'
+    })
+    .then(
+      // success
+      () => {
+      },
+      // failure
+      e => {
+        console.error(e)
+      }
+    )
   }
 
   deleteLike() {
+    $.ajax({
+      'url': `${UNIVERSITY_DATA.rootUrl}/wp-json/university/v1/like`,
+      'type': 'DELETE'
+    })
+    .then(
+      // success
+      () => {
+      },
+      // failure
+      e => {
+        console.error(e)
+      }
+    )
   }
 }
 

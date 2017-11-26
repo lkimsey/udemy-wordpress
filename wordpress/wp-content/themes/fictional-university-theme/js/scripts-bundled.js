@@ -10539,10 +10539,32 @@ var Like = function () {
     }
   }, {
     key: 'createLike',
-    value: function createLike() {}
+    value: function createLike() {
+      _jquery2.default.ajax({
+        'url': UNIVERSITY_DATA.rootUrl + '/wp-json/university/v1/like',
+        'type': 'POST'
+      }).then(
+      // success
+      function () {},
+      // failure
+      function (e) {
+        console.error(e);
+      });
+    }
   }, {
     key: 'deleteLike',
-    value: function deleteLike() {}
+    value: function deleteLike() {
+      _jquery2.default.ajax({
+        'url': UNIVERSITY_DATA.rootUrl + '/wp-json/university/v1/like',
+        'type': 'DELETE'
+      }).then(
+      // success
+      function () {},
+      // failure
+      function (e) {
+        console.error(e);
+      });
+    }
   }]);
 
   return Like;

@@ -1,6 +1,7 @@
 <?php
 
 require_once(get_theme_file_path('/includes/search-route.php'));
+require_once(get_theme_file_path('/includes/like-route.php'));
 
 $IMAGE_SIZES = array(
   'professorLandscape' => array('w' => 400, 'h' => 260),
