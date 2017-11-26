@@ -5,6 +5,7 @@ class MyNotes {
   constructor() {
     this.$deleteButton = $('.delete-note')
     this.$editButton = $('.edit-note')
+    this.$updateButton = $('.update-note')
 
     this.events()
   }
@@ -13,9 +14,38 @@ class MyNotes {
   events() {
     this.$deleteButton.on('click', this.deleteNote.bind(this))
     this.$editButton.on('click', this.editNote.bind(this))
+    this.$updateButton.on('click', this.updateNote.bind(this))
   }
 
   // 3. Methods
+  updateNote(e) {
+    const
+      $noteItem = $(e.target).parents('li'),
+      note = {
+        'title': $noteItem.find('.note-title-field').val(),
+        'content': $noteItem.find('.note-body-field').val()
+      }
+
+    $.ajax({
+      'url': `${UNIVERSITY_DATA.rootUrl}/wp-json/wp/v2/note/${$noteItem.data('id')}`,
+      'type': 'POST',
+      'data': note,
+      'beforeSend': xhr => {
+        xhr.setRequestHeader('X-WP-Nonce', UNIVERSITY_DATA.nonce)
+      }
+    })
+    .then(
+      // success
+      response => {
+        this.makeNoteReadonly($noteItem)
+      },
+      // failure
+      e => {
+        console.error(e)
+      }
+    )
+  }
+
   editNote(e) {
     const
       $noteItem = $(e.target).parents('li')

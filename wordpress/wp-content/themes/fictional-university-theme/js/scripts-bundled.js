@@ -10562,6 +10562,7 @@ var MyNotes = function () {
 
     this.$deleteButton = (0, _jquery2.default)('.delete-note');
     this.$editButton = (0, _jquery2.default)('.edit-note');
+    this.$updateButton = (0, _jquery2.default)('.update-note');
 
     this.events();
   }
@@ -10574,10 +10575,39 @@ var MyNotes = function () {
     value: function events() {
       this.$deleteButton.on('click', this.deleteNote.bind(this));
       this.$editButton.on('click', this.editNote.bind(this));
+      this.$updateButton.on('click', this.updateNote.bind(this));
     }
 
     // 3. Methods
 
+  }, {
+    key: 'updateNote',
+    value: function updateNote(e) {
+      var _this = this;
+
+      var $noteItem = (0, _jquery2.default)(e.target).parents('li'),
+          note = {
+        'title': $noteItem.find('.note-title-field').val(),
+        'content': $noteItem.find('.note-body-field').val()
+      };
+
+      _jquery2.default.ajax({
+        'url': UNIVERSITY_DATA.rootUrl + '/wp-json/wp/v2/note/' + $noteItem.data('id'),
+        'type': 'POST',
+        'data': note,
+        'beforeSend': function beforeSend(xhr) {
+          xhr.setRequestHeader('X-WP-Nonce', UNIVERSITY_DATA.nonce);
+        }
+      }).then(
+      // success
+      function (response) {
+        _this.makeNoteReadonly($noteItem);
+      },
+      // failure
+      function (e) {
+        console.error(e);
+      });
+    }
   }, {
     key: 'editNote',
     value: function editNote(e) {
