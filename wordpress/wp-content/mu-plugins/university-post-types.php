@@ -88,7 +88,9 @@ function university_post_types() {
     ),
     'menu_icon' => 'dashicons-welcome-write-blog',
     'show_in_rest' => true,
-    'supports' => array('title', 'editor')
+    'supports' => array('title', 'editor'),
+    'capability_type' => 'note',
+    'map_meta_cap' => true
   ));
 }
 
