@@ -14,7 +14,27 @@ class MyNotes {
   }
 
   // 3. Methods
-  deleteNote() {
+  deleteNote(e) {
+    const
+      $noteItem = $(e.target).parents('li')
+
+    $.ajax({
+      'url': `${UNIVERSITY_DATA.rootUrl}/wp-json/wp/v2/note/${$noteItem.data('id')}`,
+      'type': 'DELETE',
+      'beforeSend': xhr => {
+        xhr.setRequestHeader('X-WP-Nonce', UNIVERSITY_DATA.nonce)
+      }
+    })
+    .then(
+      // success
+      response => {
+        $noteItem.slideUp()
+      },
+      // failure
+      e => {
+        console.error(e)
+      }
+    )
   }
 }
 

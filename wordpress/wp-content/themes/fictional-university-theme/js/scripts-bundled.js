@@ -10578,7 +10578,25 @@ var MyNotes = function () {
 
   }, {
     key: 'deleteNote',
-    value: function deleteNote() {}
+    value: function deleteNote(e) {
+      var $noteItem = (0, _jquery2.default)(e.target).parents('li');
+
+      _jquery2.default.ajax({
+        'url': UNIVERSITY_DATA.rootUrl + '/wp-json/wp/v2/note/' + $noteItem.data('id'),
+        'type': 'DELETE',
+        'beforeSend': function beforeSend(xhr) {
+          xhr.setRequestHeader('X-WP-Nonce', UNIVERSITY_DATA.nonce);
+        }
+      }).then(
+      // success
+      function (response) {
+        $noteItem.slideUp();
+      },
+      // failure
+      function (e) {
+        console.error(e);
+      });
+    }
   }]);
 
   return MyNotes;
