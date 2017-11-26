@@ -34,7 +34,7 @@ while(have_posts()) {
       $userNotes->the_post();
       ?>
       <li data-id="<?php the_ID(); ?>">
-        <input class="note-title-field" value="<?php echo esc_attr(get_the_title()); ?>" readonly />
+        <input class="note-title-field" value="<?php echo str_replace('Private: ', '', esc_attr(get_the_title())); ?>" readonly />
         <span class="edit-note"><i class="fa fa-pencil" aria-hidden="true"></i> Edit</span>
         <span class="delete-note"><i class="fa fa-trash-o" aria-hidden="true"></i> Delete</span>
         <textarea class="note-body-field" readonly><?php echo esc_attr(get_the_content()); ?></textarea>
