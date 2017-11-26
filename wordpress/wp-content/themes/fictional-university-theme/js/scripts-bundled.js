@@ -63,7 +63,7 @@
 /******/ 	__webpack_require__.p = "";
 /******/
 /******/ 	// Load entry module and return exports
-/******/ 	return __webpack_require__(__webpack_require__.s = 7);
+/******/ 	return __webpack_require__(__webpack_require__.s = 8);
 /******/ })
 /************************************************************************/
 /******/ ([
@@ -10507,6 +10507,70 @@ function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { de
 
 function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
 
+var Like = function () {
+  // 1. Initialize
+  function Like() {
+    _classCallCheck(this, Like);
+
+    this.events();
+  }
+
+  // 2. Events
+
+
+  _createClass(Like, [{
+    key: 'events',
+    value: function events() {
+      (0, _jquery2.default)('.like-box').on('click', this.clickDispatcher.bind(this));
+    }
+
+    // 3. Methods
+
+  }, {
+    key: 'clickDispatcher',
+    value: function clickDispatcher(e) {
+      var $likeBox = (0, _jquery2.default)(e.target).closest('.like-box');
+
+      if ('yes' === $likeBox.data('exists')) {
+        this.deleteLike();
+      } else {
+        this.createLike();
+      }
+    }
+  }, {
+    key: 'createLike',
+    value: function createLike() {}
+  }, {
+    key: 'deleteLike',
+    value: function deleteLike() {}
+  }]);
+
+  return Like;
+}();
+
+exports.default = Like;
+
+/***/ }),
+/* 4 */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+
+Object.defineProperty(exports, "__esModule", {
+  value: true
+});
+
+var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
+
+var _jquery = __webpack_require__(0);
+
+var _jquery2 = _interopRequireDefault(_jquery);
+
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+
 var MobileMenu = function () {
   function MobileMenu() {
     _classCallCheck(this, MobileMenu);
@@ -10535,7 +10599,7 @@ var MobileMenu = function () {
 exports.default = MobileMenu;
 
 /***/ }),
-/* 4 */
+/* 5 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -10689,7 +10753,7 @@ var MyNotes = function () {
 exports.default = MyNotes;
 
 /***/ }),
-/* 5 */
+/* 6 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -10850,7 +10914,7 @@ var Search = function () {
 exports.default = Search;
 
 /***/ }),
-/* 6 */
+/* 7 */
 /***/ (function(module, exports, __webpack_require__) {
 
 var __WEBPACK_AMD_DEFINE_FACTORY__, __WEBPACK_AMD_DEFINE_ARRAY__, __WEBPACK_AMD_DEFINE_RESULT__;/*
@@ -13751,7 +13815,7 @@ var __WEBPACK_AMD_DEFINE_FACTORY__, __WEBPACK_AMD_DEFINE_ARRAY__, __WEBPACK_AMD_
 
 
 /***/ }),
-/* 7 */
+/* 8 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -13761,11 +13825,11 @@ var _jquery = __webpack_require__(0);
 
 var _jquery2 = _interopRequireDefault(_jquery);
 
-var _slickCarousel = __webpack_require__(6);
+var _slickCarousel = __webpack_require__(7);
 
 var _slickCarousel2 = _interopRequireDefault(_slickCarousel);
 
-var _MobileMenu = __webpack_require__(3);
+var _MobileMenu = __webpack_require__(4);
 
 var _MobileMenu2 = _interopRequireDefault(_MobileMenu);
 
@@ -13777,26 +13841,31 @@ var _GoogleMap = __webpack_require__(1);
 
 var _GoogleMap2 = _interopRequireDefault(_GoogleMap);
 
-var _Search = __webpack_require__(5);
+var _Search = __webpack_require__(6);
 
 var _Search2 = _interopRequireDefault(_Search);
 
-var _MyNotes = __webpack_require__(4);
+var _MyNotes = __webpack_require__(5);
 
 var _MyNotes2 = _interopRequireDefault(_MyNotes);
+
+var _Like = __webpack_require__(3);
+
+var _Like2 = _interopRequireDefault(_Like);
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
 // Instantiate a new object using our modules/classes
-var mobileMenu = new _MobileMenu2.default();
+
 
 // Our modules / classes
 // 3rd party packages from NPM
-
+var mobileMenu = new _MobileMenu2.default();
 var heroSlider = new _HeroSlider2.default();
 var googleMap = new _GoogleMap2.default();
 var search = new _Search2.default();
 var myNotes = new _MyNotes2.default();
+var like = new _Like2.default();
 
 /***/ })
 /******/ ]);
