@@ -3,21 +3,61 @@ import $ from 'jquery'
 class MyNotes {
   // 1. Initialize
   constructor() {
-    this.$deleteButton = $('.delete-note')
-    this.$editButton = $('.edit-note')
-    this.$updateButton = $('.update-note')
-
     this.events()
   }
 
   // 2. Events
   events() {
-    this.$deleteButton.on('click', this.deleteNote.bind(this))
-    this.$editButton.on('click', this.editNote.bind(this))
-    this.$updateButton.on('click', this.updateNote.bind(this))
+    $('#myNotes')
+      .on('click', '.delete-note', this.deleteNote.bind(this))
+      .on('click', '.edit-note', this.editNote.bind(this))
+      .on('click', '.update-note', this.updateNote.bind(this))
+
+    $('.submit-note').on('click', this.createNote.bind(this))
   }
 
   // 3. Methods
+  createNote(e) {
+    const
+      note = {
+        'title': $('.new-note-title').val(),
+        'content': $('.new-note-body').val(),
+        'status': 'publish'
+      }
+
+    $.ajax({
+      'url': `${UNIVERSITY_DATA.rootUrl}/wp-json/wp/v2/note/`,
+      'type': 'POST',
+      'data': note,
+      'beforeSend': xhr => {
+        xhr.setRequestHeader('X-WP-Nonce', UNIVERSITY_DATA.nonce)
+      }
+    })
+    .then(
+      // success
+      newNote => {
+        $('.new-note-title, .new-note-body').val('')
+
+        $(`
+          <li data-id="${newNote.id}">
+            <input class="note-title-field" value="${newNote.title.raw}" readonly />
+            <span class="edit-note"><i class="fa fa-pencil" aria-hidden="true"></i> Edit</span>
+            <span class="delete-note"><i class="fa fa-trash-o" aria-hidden="true"></i> Delete</span>
+            <textarea class="note-body-field" readonly>${newNote.content.raw}</textarea>
+            <span class="update-note btn btn--blue btn--small"><i class="fa fa-arrow-right" aria-hidden="true"></i> Save</span>
+          </li>
+        `)
+          .hide()
+          .prependTo('#myNotes')
+          .slideDown()
+      },
+      // failure
+      e => {
+        console.error(e)
+      }
+    )
+  }
+
   updateNote(e) {
     const
       $noteItem = $(e.target).parents('li'),
@@ -36,7 +76,7 @@ class MyNotes {
     })
     .then(
       // success
-      response => {
+      () => {
         this.makeNoteReadonly($noteItem)
       },
       // failure
@@ -99,7 +139,7 @@ class MyNotes {
     })
     .then(
       // success
-      response => {
+      () => {
         $noteItem.slideUp()
       },
       // failure

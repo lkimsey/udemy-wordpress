@@ -10560,10 +10560,6 @@ var MyNotes = function () {
   function MyNotes() {
     _classCallCheck(this, MyNotes);
 
-    this.$deleteButton = (0, _jquery2.default)('.delete-note');
-    this.$editButton = (0, _jquery2.default)('.edit-note');
-    this.$updateButton = (0, _jquery2.default)('.update-note');
-
     this.events();
   }
 
@@ -10573,13 +10569,41 @@ var MyNotes = function () {
   _createClass(MyNotes, [{
     key: 'events',
     value: function events() {
-      this.$deleteButton.on('click', this.deleteNote.bind(this));
-      this.$editButton.on('click', this.editNote.bind(this));
-      this.$updateButton.on('click', this.updateNote.bind(this));
+      (0, _jquery2.default)('#myNotes').on('click', '.delete-note', this.deleteNote.bind(this)).on('click', '.edit-note', this.editNote.bind(this)).on('click', '.update-note', this.updateNote.bind(this));
+
+      (0, _jquery2.default)('.submit-note').on('click', this.createNote.bind(this));
     }
 
     // 3. Methods
 
+  }, {
+    key: 'createNote',
+    value: function createNote(e) {
+      var note = {
+        'title': (0, _jquery2.default)('.new-note-title').val(),
+        'content': (0, _jquery2.default)('.new-note-body').val(),
+        'status': 'publish'
+      };
+
+      _jquery2.default.ajax({
+        'url': UNIVERSITY_DATA.rootUrl + '/wp-json/wp/v2/note/',
+        'type': 'POST',
+        'data': note,
+        'beforeSend': function beforeSend(xhr) {
+          xhr.setRequestHeader('X-WP-Nonce', UNIVERSITY_DATA.nonce);
+        }
+      }).then(
+      // success
+      function (newNote) {
+        (0, _jquery2.default)('.new-note-title, .new-note-body').val('');
+
+        (0, _jquery2.default)('\n          <li data-id="' + newNote.id + '">\n            <input class="note-title-field" value="' + newNote.title.raw + '" readonly />\n            <span class="edit-note"><i class="fa fa-pencil" aria-hidden="true"></i> Edit</span>\n            <span class="delete-note"><i class="fa fa-trash-o" aria-hidden="true"></i> Delete</span>\n            <textarea class="note-body-field" readonly>' + newNote.content.raw + '</textarea>\n            <span class="update-note btn btn--blue btn--small"><i class="fa fa-arrow-right" aria-hidden="true"></i> Save</span>\n          </li>\n        ').hide().prependTo('#myNotes').slideDown();
+      },
+      // failure
+      function (e) {
+        console.error(e);
+      });
+    }
   }, {
     key: 'updateNote',
     value: function updateNote(e) {
@@ -10600,7 +10624,7 @@ var MyNotes = function () {
         }
       }).then(
       // success
-      function (response) {
+      function () {
         _this.makeNoteReadonly($noteItem);
       },
       // failure
@@ -10642,7 +10666,7 @@ var MyNotes = function () {
         }
       }).then(
       // success
-      function (response) {
+      function () {
         $noteItem.slideUp();
       },
       // failure
