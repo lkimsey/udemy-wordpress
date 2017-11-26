@@ -161,6 +161,13 @@ function university_login_css() {
   wp_enqueue_style('university_main_styles', get_stylesheet_uri());
 }
 
+function make_note_private($data) {
+  if('note' == $data['post_type'] && 'trash' != $data['post_status']) {
+    $data['post_status'] = 'private';
+  }
+
+  return $data;
+}
 
 add_action('wp_enqueue_scripts', 'university_files');
 add_action('after_setup_theme', 'university_features');
@@ -175,6 +182,9 @@ add_action('wp_loaded', 'no_subscriber_admin_bar');
 add_action('login_enqueue_scripts', 'university_login_css');
 add_filter('login_headerurl', 'university_header_url');
 add_filter('login_headertitle', 'university_header_title');
+
+// Force note posts to be private
+add_filter('wp_insert_post_data', 'make_note_private');
 
 // Disable default image sizes
 add_filter('intermediate_image_sizes_advanced', 'university_remove_default_image_sizes');

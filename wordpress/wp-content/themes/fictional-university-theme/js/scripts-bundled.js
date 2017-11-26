@@ -10581,8 +10581,7 @@ var MyNotes = function () {
     value: function createNote(e) {
       var note = {
         'title': (0, _jquery2.default)('.new-note-title').val(),
-        'content': (0, _jquery2.default)('.new-note-body').val(),
-        'status': 'publish'
+        'content': (0, _jquery2.default)('.new-note-body').val()
       };
 
       _jquery2.default.ajax({

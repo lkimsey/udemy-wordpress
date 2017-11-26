@@ -21,8 +21,7 @@ class MyNotes {
     const
       note = {
         'title': $('.new-note-title').val(),
-        'content': $('.new-note-body').val(),
-        'status': 'publish'
+        'content': $('.new-note-body').val()
       }
 
     $.ajax({
