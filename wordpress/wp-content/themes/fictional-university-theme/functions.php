@@ -161,9 +161,18 @@ function university_login_css() {
   wp_enqueue_style('university_main_styles', get_stylesheet_uri());
 }
 
-function make_note_private($data) {
-  if('note' == $data['post_type'] && 'trash' != $data['post_status']) {
-    $data['post_status'] = 'private';
+function university_post_filter($data) {
+  if('note' == $data['post_type']) {
+    // Filtering for user entered "note" post type
+
+    // Sanitize title and content
+    $data['post_content'] = sanitize_textarea_field($data['post_content']);
+    $data['post_title'] = sanitize_text_field($data['post_title']);
+
+    // Make sure notes are always kept private (unless being deleted)
+    if('trash' != $data['post_status']) {
+      $data['post_status'] = 'private';
+    }
   }
 
   return $data;
@@ -183,8 +192,8 @@ add_action('login_enqueue_scripts', 'university_login_css');
 add_filter('login_headerurl', 'university_header_url');
 add_filter('login_headertitle', 'university_header_title');
 
-// Force note posts to be private
-add_filter('wp_insert_post_data', 'make_note_private');
+// Make adjustments to posts being manipulated by the user
+add_filter('wp_insert_post_data', 'university_post_filter');
 
 // Disable default image sizes
 add_filter('intermediate_image_sizes_advanced', 'university_remove_default_image_sizes');
