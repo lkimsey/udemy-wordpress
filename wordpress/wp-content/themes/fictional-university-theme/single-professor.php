@@ -43,6 +43,7 @@ while(have_posts()) {
         <div class="two-thirds">
         <span class="like-box"
           data-professor-id="<?php the_ID(); ?>"
+          data-like-id="<?php echo $iLike->posts[0]->ID; ?>"
           data-exists="<?php echo $iLike->found_posts ? 'yes' : 'no'; ?>">
             <i class="fa fa-heart-o" aria-hidden="true"></i>
             <i class="fa fa-heart" aria-hidden="true"></i>

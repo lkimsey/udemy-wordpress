@@ -10531,7 +10531,7 @@ var Like = function () {
     value: function clickDispatcher(e) {
       var $likeBox = (0, _jquery2.default)(e.target).closest('.like-box');
 
-      if ('yes' === $likeBox.data('exists')) {
+      if ('yes' === $likeBox.attr('data-exists')) {
         this.deleteLike($likeBox);
       } else {
         this.createLike($likeBox);
@@ -10551,7 +10551,13 @@ var Like = function () {
         }
       }).then(
       // success
-      function () {},
+      function (likeId) {
+        var likeCount = parseInt($likeBox.find('.like-count').text(), 10);
+
+        $likeBox.attr('data-exists', 'yes');
+        $likeBox.attr('data-like-id', likeId);
+        $likeBox.find('.like-count').text(likeCount + 1);
+      },
       // failure
       function (e) {
         console.error(e);
@@ -10559,16 +10565,25 @@ var Like = function () {
     }
   }, {
     key: 'deleteLike',
-    value: function deleteLike() {
+    value: function deleteLike($likeBox) {
       _jquery2.default.ajax({
         'url': UNIVERSITY_DATA.rootUrl + '/wp-json/university/v1/like',
         'type': 'DELETE',
+        'data': {
+          'likeId': $likeBox.attr('data-like-id')
+        },
         'beforeSend': function beforeSend(xhr) {
           xhr.setRequestHeader('X-WP-Nonce', UNIVERSITY_DATA.nonce);
         }
       }).then(
       // success
-      function () {},
+      function () {
+        var likeCount = parseInt($likeBox.find('.like-count').text(), 10);
+
+        $likeBox.attr('data-exists', 'no');
+        $likeBox.attr('data-like-id', '');
+        $likeBox.find('.like-count').text(likeCount - 1);
+      },
       // failure
       function (e) {
         console.error(e);

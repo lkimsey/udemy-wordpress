@@ -49,7 +49,24 @@ function createLike($data) {
   ));
 }
 
-function deleteLike() {
+function deleteLike($data) {
+  if(!is_user_logged_in()) {
+    die('Only logged in users can delete a like.');
+  }
+
+  $likeId = sanitize_text_field($data['likeId']);
+
+  if('like' != get_post_type($likeId)) {
+    die('Invalid like');
+  }
+
+  if(get_current_user_id() != get_post_field('post_author', $likeId)) {
+    die('You do not have permission to delete this like.');
+  }
+
+  wp_delete_post($likeId, true);
+
+  return 'Like deleted';
 }
 
 
