@@ -16,17 +16,19 @@ while(have_posts()) {
     )
   ));
 
-  $iLike = new WP_Query(array(
-    'post_type' => 'like',
-    'author' => get_current_user_id(),
-    'meta_query' => array(
-      array(
-        'key' => 'liked_professor_id',
-        'compare' => '=',
-        'value' => get_the_ID()
+  if(is_user_logged_in()) {
+    $iLike = new WP_Query(array(
+      'post_type' => 'like',
+      'author' => get_current_user_id(),
+      'meta_query' => array(
+        array(
+          'key' => 'liked_professor_id',
+          'compare' => '=',
+          'value' => get_the_ID()
+        )
       )
-    )
-  ));
+    ));
+  }
 
   the_post();
 
@@ -39,7 +41,9 @@ while(have_posts()) {
           <?php the_post_thumbnail('professorPotrait'); ?>
         </div>
         <div class="two-thirds">
-        <span class="like-box" data-exists="<?php echo $iLike->found_posts ? 'yes' : 'no'; ?>">
+        <span class="like-box"
+          data-professor-id="<?php the_ID(); ?>"
+          data-exists="<?php echo $iLike->found_posts ? 'yes' : 'no'; ?>">
             <i class="fa fa-heart-o" aria-hidden="true"></i>
             <i class="fa fa-heart" aria-hidden="true"></i>
             <span class="like-count"><?php echo $likeCount->found_posts; ?></span>

@@ -10532,17 +10532,23 @@ var Like = function () {
       var $likeBox = (0, _jquery2.default)(e.target).closest('.like-box');
 
       if ('yes' === $likeBox.data('exists')) {
-        this.deleteLike();
+        this.deleteLike($likeBox);
       } else {
-        this.createLike();
+        this.createLike($likeBox);
       }
     }
   }, {
     key: 'createLike',
-    value: function createLike() {
+    value: function createLike($likeBox) {
       _jquery2.default.ajax({
         'url': UNIVERSITY_DATA.rootUrl + '/wp-json/university/v1/like',
-        'type': 'POST'
+        'type': 'POST',
+        'data': {
+          'professorId': $likeBox.data('professor-id')
+        },
+        'beforeSend': function beforeSend(xhr) {
+          xhr.setRequestHeader('X-WP-Nonce', UNIVERSITY_DATA.nonce);
+        }
       }).then(
       // success
       function () {},
@@ -10556,7 +10562,10 @@ var Like = function () {
     value: function deleteLike() {
       _jquery2.default.ajax({
         'url': UNIVERSITY_DATA.rootUrl + '/wp-json/university/v1/like',
-        'type': 'DELETE'
+        'type': 'DELETE',
+        'beforeSend': function beforeSend(xhr) {
+          xhr.setRequestHeader('X-WP-Nonce', UNIVERSITY_DATA.nonce);
+        }
       }).then(
       // success
       function () {},

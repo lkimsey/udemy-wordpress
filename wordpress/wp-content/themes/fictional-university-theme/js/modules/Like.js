@@ -17,17 +17,23 @@ class Like {
       $likeBox = $(e.target).closest('.like-box')
 
     if('yes' === $likeBox.data('exists')) {
-      this.deleteLike()
+      this.deleteLike($likeBox)
     }
     else{
-      this.createLike()
+      this.createLike($likeBox)
     }
   }
 
-  createLike() {
+  createLike($likeBox) {
     $.ajax({
       'url': `${UNIVERSITY_DATA.rootUrl}/wp-json/university/v1/like`,
-      'type': 'POST'
+      'type': 'POST',
+      'data': {
+        'professorId': $likeBox.data('professor-id')
+      },
+      'beforeSend': xhr => {
+        xhr.setRequestHeader('X-WP-Nonce', UNIVERSITY_DATA.nonce)
+      }
     })
     .then(
       // success
@@ -43,7 +49,10 @@ class Like {
   deleteLike() {
     $.ajax({
       'url': `${UNIVERSITY_DATA.rootUrl}/wp-json/university/v1/like`,
-      'type': 'DELETE'
+      'type': 'DELETE',
+      'beforeSend': xhr => {
+        xhr.setRequestHeader('X-WP-Nonce', UNIVERSITY_DATA.nonce)
+      }
     })
     .then(
       // success
